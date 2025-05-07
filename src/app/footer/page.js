@@ -31,7 +31,7 @@ export default function Footer() {
           <a href="#" className="text-[#d1b28d] hover:text-white">
             <FaFacebookF className="text-2xl sm:text-3xl" />
           </a>
-          <a href="#" className="text-[#d1b28d] hover:text-white">
+          <a href="https://www.instagram.com/zafari.cc.design?igsh=a2Nob3d4ZzhodzZr" className="text-[#d1b28d] hover:text-white">
             <FaInstagram className="text-2xl sm:text-3xl" />
           </a>
           <a href="#" className="text-[#d1b28d] hover:text-white">
