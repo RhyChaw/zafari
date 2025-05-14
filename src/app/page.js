@@ -1,4 +1,6 @@
 // pages/index.js
+'use client';
+import React from 'react';
 import Footer from './footer/page';
 import Image from 'next/image';
 import Navbar from './navbar/page';
@@ -37,40 +39,92 @@ export default function Home() {
 
         {/* Services Section */}
         <section className="mt-12 flex justify-center items-center gap-6">
-          <div className="flex gap-6 w-full max-w-screen-xl">
-            {/* Card 1 */}
-            <div className="w-1/4 h-[400px] bg-cover bg-center rounded-lg shadow-lg transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl" style={{ backgroundImage: `url(${customCarpentry})` }}>
-              <div className="flex flex-col justify-center items-center bg-black bg-opacity-40 p-4 rounded-lg h-full">
-                <h3 className="text-white text-2xl font-semibold">Custom Carpentry</h3>
-                <p className="text-white text-lg mt-2">Tailored carpentry solutions to meet your unique needs.</p>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="w-1/4 h-[400px] bg-cover bg-center rounded-lg shadow-lg transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl" style={{ backgroundImage: `url(${interiorDesign})` }}>
-              <div className="flex flex-col justify-center items-center bg-black bg-opacity-40 p-4 rounded-lg h-full">
-                <h3 className="text-white text-2xl font-semibold">Interior Design</h3>
-                <p className="text-white text-lg mt-2">Creative designs to transform your space into a work of art.</p>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="w-1/4 h-[400px] bg-cover bg-center rounded-lg shadow-lg transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl" style={{ backgroundImage: `url(${furnitureDesign})` }}>
-              <div className="flex flex-col justify-center items-center bg-black bg-opacity-40 p-4 rounded-lg h-full">
-                <h3 className="text-white text-2xl font-semibold">Furniture Design</h3>
-                <p className="text-white text-lg mt-2">Custom furniture that adds style and functionality to your home.</p>
-              </div>
-            </div>
-
-            {/* Card 4 */}
-            <div className="w-1/4 h-[400px] bg-cover bg-center rounded-lg shadow-lg transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl" style={{ backgroundImage: `url(${roomRedesign})` }}>
-              <div className="flex flex-col justify-center items-center bg-black bg-opacity-40 p-4 rounded-lg h-full">
-                <h3 className="text-white text-2xl font-semibold">Room Redesign</h3>
-                <p className="text-white text-lg mt-2">Reimagine your space with our room redesign services.</p>
-              </div>
-            </div>
+  <div className="flex gap-6 w-full max-w-screen-xl">
+    {/* Card 1 */}
+    <div className="w-1/4 h-[400px] perspective-1000" onClick={() => handleCardClick(1)}>
+      <div className="w-full h-full group relative transform-style-preserve-3d duration-500 hover:rotate-y-180">
+        {/* Front Side */}
+        <div className="w-full h-full bg-cover bg-center rounded-lg shadow-lg transform-style-preserve-3d transition-all" style={{ backgroundImage: `url(${customCarpentry})` }}>
+          <div className="flex flex-col justify-center items-center bg-black bg-opacity-40 p-4 rounded-lg h-full">
+            <h3 className="text-white text-2xl font-semibold">Custom Carpentry</h3>
+            <p className="text-white text-lg mt-2">Tailored carpentry solutions to meet your unique needs.</p>
           </div>
-        </section>
+        </div>
+
+        {/* Back Side (flipped) */}
+        <div className="absolute w-full h-full bg-cover bg-center rounded-lg shadow-lg transform rotate-y-180 bg-opacity-50" style={{ backgroundImage: `url(${customCarpentry})` }}>
+          <div className="flex flex-col justify-center items-center bg-black bg-opacity-50 p-4 rounded-lg h-full">
+            <h3 className="text-white text-2xl font-semibold">Custom Carpentry</h3>
+            <p className="text-white text-lg mt-2">This is the back side with the same image showing details!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Card 2 */}
+    <div className="w-1/4 h-[400px] perspective-1000" onClick={() => handleCardClick(2)}>
+      <div className="w-full h-full group relative transform-style-preserve-3d duration-500 hover:rotate-y-180">
+        {/* Front Side */}
+        <div className="w-full h-full bg-cover bg-center rounded-lg shadow-lg transform-style-preserve-3d transition-all" style={{ backgroundImage: `url(${interiorDesign})` }}>
+          <div className="flex flex-col justify-center items-center bg-black bg-opacity-40 p-4 rounded-lg h-full">
+            <h3 className="text-white text-2xl font-semibold">Interior Design</h3>
+            <p className="text-white text-lg mt-2">Creative designs to transform your space into a work of art.</p>
+          </div>
+        </div>
+
+        {/* Back Side (flipped) */}
+        <div className="absolute w-full h-full bg-cover bg-center rounded-lg shadow-lg transform rotate-y-180 bg-opacity-50" style={{ backgroundImage: `url(${interiorDesign})` }}>
+          <div className="flex flex-col justify-center items-center bg-black bg-opacity-50 p-4 rounded-lg h-full">
+            <h3 className="text-white text-2xl font-semibold">Interior Design</h3>
+            <p className="text-white text-lg mt-2">This is the back side with more information about Interior Design.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Card 3 */}
+    <div className="w-1/4 h-[400px] perspective-1000" onClick={() => handleCardClick(3)}>
+      <div className="w-full h-full group relative transform-style-preserve-3d duration-500 hover:rotate-y-180">
+        {/* Front Side */}
+        <div className="w-full h-full bg-cover bg-center rounded-lg shadow-lg transform-style-preserve-3d transition-all" style={{ backgroundImage: `url(${furnitureDesign})` }}>
+          <div className="flex flex-col justify-center items-center bg-black bg-opacity-40 p-4 rounded-lg h-full">
+            <h3 className="text-white text-2xl font-semibold">Furniture Design</h3>
+            <p className="text-white text-lg mt-2">Custom furniture that adds style and functionality to your home.</p>
+          </div>
+        </div>
+
+        {/* Back Side (flipped) */}
+        <div className="absolute w-full h-full bg-cover bg-center rounded-lg shadow-lg transform rotate-y-180 bg-opacity-50" style={{ backgroundImage: `url(${furnitureDesign})` }}>
+          <div className="flex flex-col justify-center items-center bg-black bg-opacity-50 p-4 rounded-lg h-full">
+            <h3 className="text-white text-2xl font-semibold">Furniture Design</h3>
+            <p className="text-white text-lg mt-2">This is the back side showing more details about furniture design.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Card 4 */}
+    <div className="w-1/4 h-[400px] perspective-1000" onClick={() => handleCardClick(4)}>
+      <div className="w-full h-full group relative transform-style-preserve-3d duration-500 hover:rotate-y-180">
+        {/* Front Side */}
+        <div className="w-full h-full bg-cover bg-center rounded-lg shadow-lg transform-style-preserve-3d transition-all" style={{ backgroundImage: `url(${roomRedesign})` }}>
+          <div className="flex flex-col justify-center items-center bg-black bg-opacity-40 p-4 rounded-lg h-full">
+            <h3 className="text-white text-2xl font-semibold">Room Redesign</h3>
+            <p className="text-white text-lg mt-2">Reimagine your space with our room redesign services.</p>
+          </div>
+        </div>
+
+        {/* Back Side (flipped) */}
+        <div className="absolute w-full h-full bg-cover bg-center rounded-lg shadow-lg transform rotate-y-180 bg-opacity-50" style={{ backgroundImage: `url(${roomRedesign})` }}>
+          <div className="flex flex-col justify-center items-center bg-black bg-opacity-50 p-4 rounded-lg h-full">
+            <h3 className="text-white text-2xl font-semibold">Room Redesign</h3>
+            <p className="text-white text-lg mt-2">This is the back side with additional info on room redesign.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
         {/* Why Choose Us Section */}
         <section className="mt-12">

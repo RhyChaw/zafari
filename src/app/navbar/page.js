@@ -11,7 +11,9 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#6a4e23] to-[#9e7a3f] py-4 shadow-md">
+    // <nav className="bg-gradient-to-r from-[#6a4e23] to-[#9e7a3f] py-4 shadow-md">
+    <nav className="bg-black py-4 shadow-md">
+
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo */}
         <div className="flex items-center">
