@@ -17,8 +17,13 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo */}
         <div className="flex items-center">
+                    <Link href="/" className="text-white text-lg font-bold ml-3">
           <img src="/logo.jpeg" alt="Zafari CC Design Logo" className="h-12" />
+                    </Link>
+
+          <Link href="/" className="text-white text-lg font-bold ml-3">
           <span className="text-2xl font-bold ml-3 text-[#d1b28d]">Zafari CC Design</span>
+          </Link>
           <span className="text-sm align-top ml-2 text-[#d1b28d]">LLC</span>
         </div>
 

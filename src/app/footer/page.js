@@ -1,21 +1,21 @@
-import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa'; // Add icon library
+import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#3c2f28] text-white py-10">
+    <footer className="bg-black text-white py-10">
       <div className="container mx-auto px-4 sm:px-8 text-center">
-        <h3 className="text-2xl sm:text-3xl font-bold mb-4">Zafari CC Design LLC</h3>
-        <p className="mb-6 text-lg sm:text-xl">Your dream space, beautifully crafted with care and precision.</p>
+        <h3 className="text-2xl sm:text-3xl font-bold mb-4 text-[#d1b28d]">Zafari CC Design LLC</h3>
+        <p className="mb-6 text-lg sm:text-xl text-[#d1b28d]">Your dream space, beautifully crafted with care and precision.</p>
         
         {/* Contact info */}
         <div className="flex flex-col sm:flex-row justify-center gap-10 mb-6">
-          <div>
-            <h4 className="font-semibold text-lg sm:text-xl mb-2">Contact AD Zafari</h4>
-            <p>📞 +1 585 698 5048</p>
+          <div className="bg-wood p-4 rounded">
+            <h4 className="font-semibold text-lg sm:text-xl mb-2 text-white">Contact AD Zafari</h4>
+            <p className="text-[#d1b28d]">📞 +1 585 698 5048</p>
           </div>
-          <div>
-            <h4 className="font-semibold text-lg sm:text-xl mb-2">Contact Amir Zafari</h4>
-            <p>📞 +1 585 362 0801</p>
+          <div className="bg-wood p-4 rounded">
+            <h4 className="font-semibold text-lg sm:text-xl mb-2 text-white">Contact Amir Zafari</h4>
+            <p className="text-[#d1b28d]">📞 +1 585 362 0801</p>
           </div>
         </div>
   
@@ -50,10 +50,8 @@ export default function Footer() {
         </div>
   
         {/* Copyright */}
-        <p className="mt-8 text-sm sm:text-base">&copy; {new Date().getFullYear()} Zafari CC Design LLC. All rights reserved.</p>
+        <p className="mt-8 text-sm sm:text-base text-[#d1b28d]">&copy; {new Date().getFullYear()} Zafari CC Design LLC. All rights reserved.</p>
       </div>
     </footer>
   );
 }
-
-
