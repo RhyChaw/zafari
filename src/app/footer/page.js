@@ -24,6 +24,9 @@ export default function Footer() {
           <p className="text-lg sm:text-xl">Email: 
             <a href="mailto:zafaricdesignllc@gmail.com" className="text-[#d1b28d] hover:text-white"> zafaricdesignllc@gmail.com</a>
           </p>
+          <p className="text-lg sm:text-xl">Location: 
+            <p className="text-[#d1b28d] hover:text-white">Rochester New York</p>
+          </p>
         </div>
   
         {/* Social Media */}
