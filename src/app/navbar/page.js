@@ -35,7 +35,6 @@ export default function Navbar() {
         {/* Desktop Navigation Links */}
         <div className={`hidden md:flex space-x-6`}>
           <Link href="/" className="text-[#d1b28d] hover:text-white">Home</Link>
-          <Link href="/about" className="text-[#d1b28d] hover:text-white">About</Link>
           <Link href="/projects" className="text-[#d1b28d] hover:text-white">Projects</Link>
           <Link href="/contact" className="text-[#d1b28d] hover:text-white">Contact</Link>
         </div>
@@ -45,7 +44,6 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-[#6a4e23] text-[#d1b28d] p-4 space-y-2">
           <Link href="/" className="block">Home</Link>
-          <Link href="/about" className="block">About</Link>
           <Link href="/projects" className="block">Projects</Link>
           <Link href="/contact" className="block">Contact</Link>
         </div>
