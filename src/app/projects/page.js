@@ -3,33 +3,61 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Navbar from '../navbar/page';
 import Footer from '../footer/page';
-import styles from './Projects.module.css'; // Import CSS module for styling
-
-import IMG1 from '../../images/1.jpeg';
-import IMG2 from '../../images/2.jpeg';
-import IMG3 from '../../images/3.jpeg';
-import IMG4 from '../../images/4.jpeg';
-import IMG5 from '../../images/5.jpeg';
-import IMG6 from '../../images/6.jpeg';
-import IMG7 from '../../images/7.jpeg'; 
-import IMG8 from '../../images/8.jpeg';
-import IMG9 from '../../images/9.jpeg';
-import IMG10 from '../../images/10.jpeg';
-import IMG11 from '../../images/11.jpeg';
-import IMG12 from '../../images/12.jpeg';
-import IMG13 from '../../images/13.jpeg';
-import IMG14 from '../../images/14.jpeg';
+import styles from './Projects.module.css';
+import supabase from '../../utils/supabaseClient';
 
 export default function Projects() {
-  const images = [IMG1, IMG2, IMG3, IMG4, IMG5, IMG6, IMG7, IMG8, IMG9, IMG10, IMG11, IMG12, IMG13, IMG14];
+  const [imageUrls, setImageUrls] = useState([]);
+
+  useEffect(() => {
+  const fetchImages = async () => {
+    console.log("Listing files in 'uploads' folder inside 'projects' bucket...");
+
+    const listUploads = await supabase.storage.from('projects').list('uploads', { limit: 100 });
+    console.log('Uploads folder files:', listUploads.data);
+
+    if (!listUploads.data || listUploads.data.length === 0) {
+      console.log('No files found in uploads folder.');
+      return;
+    }
+
+    const files = listUploads.data;
+
+    console.log('Files found:', files);
+
+    const urls = files
+      .filter((file) => file.name.match(/\.(jpeg|jpg|png|webp)$/i))
+      .map((file) => {
+        const { data: { publicUrl } } = supabase.storage
+          .from('projects')
+          .getPublicUrl(`uploads/${file.name}`);
+        return publicUrl;
+      });
+
+    console.log('Public URLs:', urls);
+    setImageUrls(urls);
+  };
+
+  fetchImages();
+}, []);
+
+
 
   return (
     <>
       <Navbar />
       <div className={styles.galleryContainer}>
-        {images.map((img, index) => (
+        {imageUrls.length === 0 && <p style={{ color: '#ccc', textAlign: 'center' }}>Loading images or no images found...</p>}
+        {imageUrls.map((url, index) => (
           <div key={index} className={styles.galleryItem}>
-            <Image src={img} alt={`Project ${index + 1}`} layout="intrinsic" />
+            <Image
+              src={url}
+              alt={`Project ${index + 1}`}
+              width={400}
+              height={300}
+              style={{ borderRadius: '8px', objectFit: 'cover' }}
+              priority={index < 3} // preloads first 3 images for better UX
+            />
           </div>
         ))}
       </div>

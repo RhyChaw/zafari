@@ -25,7 +25,7 @@ export default function Footer() {
             <a href="mailto:zafaricdesignllc@gmail.com" className="text-[#d1b28d] hover:text-white"> zafaricdesignllc@gmail.com</a>
           </p>
           <p className="text-lg sm:text-xl">Location: 
-            <p className="text-[#d1b28d] hover:text-white">Rochester New York</p>
+            <span className="text-[#d1b28d] hover:text-white">Rochester New York</span>
           </p>
         </div>
   

@@ -8,7 +8,6 @@ const panels = [
   { name: "Home Page", href: "/admin/home" },
   { name: "Logo", href: "/admin/logo" },
   { name: "Gallery", href: "/admin/gallery" },
-  { name: "Text", href: "/admin/text" },
 ];
 
 export default function AdminPanel() {
