@@ -1,16 +1,15 @@
 'use client';
 
-import Link from "next/link";
-import styles from "./admin.module.css";
-import Navbar from "../navbar/page";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import supabase from "../../utils/supabaseClient";
+import Link from 'next/link';
+import styles from './admin.module.css';
+import Navbar from '../navbar/page';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const panels = [
-  { name: "Home Page", href: "/admin/home" },
-  { name: "Logo", href: "/admin/logo" },
-  { name: "Gallery", href: "/admin/gallery" },
+  { name: 'Home Page', href: '/admin/home' },
+  { name: 'Logo', href: '/admin/logo' },
+  { name: 'Gallery', href: '/admin/gallery' },
 ];
 
 export default function AdminPanel() {
@@ -18,18 +17,12 @@ export default function AdminPanel() {
   const router = useRouter();
 
   useEffect(() => {
-    async function checkAuth() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        router.push("/login"); // Redirect to your login page or home
-      } else {
-        setLoading(false);
-      }
+    const isAdmin = localStorage.getItem('isAdmin');
+    if (isAdmin !== 'true') {
+      router.push('/login'); // Use your login route here
+    } else {
+      setLoading(false);
     }
-    checkAuth();
   }, [router]);
 
   if (loading) {

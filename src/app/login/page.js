@@ -1,32 +1,28 @@
 'use client';
 
 import { useState } from 'react';
-import supabase from '../../utils/supabaseClient'; // Adjust path as needed
 import { useRouter } from 'next/navigation';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const router = useRouter();
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setErrorMsg('');
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    // Replace with your secure values
+    const correctEmail = 'Ahmadshahdawlatnazar@gmail.com';
+    const correctPassword = 'ZafariAdmin11cc';
 
-    if (error) {
-      setErrorMsg(error.message);
+    if (email === correctEmail && password === correctPassword) {
+      // Save a session token to localStorage
+      localStorage.setItem('isAdmin', 'true');
+      router.push('/admin');
     } else {
-      router.push('/admin'); // Redirect after login
+      setErrorMsg('Invalid credentials');
     }
-    setLoading(false);
   };
 
   return (
@@ -81,10 +77,9 @@ export default function AdminLogin() {
 
           <button
             type="submit"
-            disabled={loading}
             className="w-full py-3 bg-white bg-opacity-20 text-black font-bold rounded-xl tracking-wide hover:bg-opacity-40 active:scale-95 transition transform duration-200"
           >
-            {loading ? 'Logging in...' : 'Sign In'}
+            Sign In
           </button>
         </form>
       </div>
