@@ -14,21 +14,47 @@ const panels = [
 
 export default function AdminPanel() {
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    // Check if user is on a small screen (mobile)
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Tailwind md breakpoint
+    };
+
+    handleResize(); // Check immediately
+    window.addEventListener('resize', handleResize);
+
     const isAdmin = localStorage.getItem('isAdmin');
     if (isAdmin !== 'true') {
-      router.push('/login'); // Use your login route here
+      router.push('/login');
     } else {
       setLoading(false);
     }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [router]);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-xl">
         Checking authentication...
+      </div>
+    );
+  }
+
+  if (isMobile) {
+    return (
+      <div className="flex items-center justify-center min-h-screen px-4 bg-black text-white text-center">
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Admin Panel Unavailable</h2>
+          <p className="text-lg">
+            Please access the admin panel using a laptop or desktop device.
+          </p>
+        </div>
       </div>
     );
   }
