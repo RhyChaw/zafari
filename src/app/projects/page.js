@@ -30,13 +30,13 @@ export default function Projects() {
     };
 
     const fetchBeforeAfter = async () => {
-      const { data, error } = await supabase.from('before_after_pairs').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase
+        .from("before_after_pairs")
+        .select("*")
+        .order("idx", { ascending: true });
 
-      if (error) {
-        console.error('Error fetching before-after pairs:', error.message);
-      } else {
-        setBeforeAfterPairs(data);
-      }
+      if (error) console.error("Fetch error:", error);
+        else setBeforeAfterPairs(data);
     };
 
     fetchImages();
@@ -79,11 +79,11 @@ export default function Projects() {
           )}
 
           {beforeAfterPairs.map((pair) => (
-            <div key={pair.id} className={styles.beforeAfterPair}>
+            <div key={pair.idx} className={styles.beforeAfterPair}>
               <div>
                 <h4 className={styles.label}>Before</h4>
                 <Image
-                  src={pair.before_image_url}
+                  src={pair.before_url}
                   alt="Before"
                   width={300}
                   height={200}
@@ -93,7 +93,7 @@ export default function Projects() {
               <div>
                 <h4 className={styles.label}>After</h4>
                 <Image
-                  src={pair.after_image_url}
+                  src={pair.after_url}
                   alt="After"
                   width={300}
                   height={200}

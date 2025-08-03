@@ -12,7 +12,7 @@ export default function page() {
     <>
       <Navbar />
       <AdminSingleUpload />
-      {/* <AdminPairUpload /> */}
+      <AdminPairUpload />
     </>
   );
 }

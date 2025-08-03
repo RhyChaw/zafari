@@ -1,123 +1,192 @@
-import React, { useState } from 'react';
-import supabase from '../../utils/supabaseClient';
-import { v4 as uuidv4 } from 'uuid';
+"use client";
+import React, { useState, useEffect } from "react";
+import supabase from "@/utils/supabaseClient";
 
-function AdminPairUpload() {
-  const [beforeImage, setBeforeImage] = useState(null);
-  const [afterImage, setAfterImage] = useState(null);
+export default function AdminPairUpload() {
+  const [pairs, setPairs] = useState([]);
   const [uploading, setUploading] = useState(false);
-  const [message, setMessage] = useState('');
 
-  const handleBeforeChange = (e) => {
-    if (e.target.files[0]) setBeforeImage(e.target.files[0]);
+  useEffect(() => {
+    fetchPairs();
+  }, []);
+
+  const fetchPairs = async () => {
+    const { data, error } = await supabase
+      .from("before_after_pairs")
+      .select("*")
+      .order("idx", { ascending: true });
+
+    if (error) console.error("Fetch error:", error);
+    else setPairs(data);
   };
 
-  const handleAfterChange = (e) => {
-    if (e.target.files[0]) setAfterImage(e.target.files[0]);
-  };
+  const handleUpload = async (file, type, idx) => {
+    const ext = file.name.split(".").pop();
+    const filePath = `${type}_${idx}_${Date.now()}.${ext}`;
 
-  const uploadPair = async () => {
-    if (!beforeImage || !afterImage) {
-      setMessage('Please select both Before and After images.');
-      return;
+    const { error } = await supabase.storage
+      .from("bapics")
+      .upload(filePath, file, { upsert: true }); // allows overwriting
+
+
+    if (error) {
+      console.error(`Upload ${type} error:`, error?.message || JSON.stringify(error) || error);
+      return null;
     }
+
+    const { data: urlData } = supabase.storage
+      .from("bapics")
+      .getPublicUrl(filePath);
+
+    return urlData.publicUrl;
+  };
+
+  const handleNewRow = async () => {
+    const newIdx = pairs.length > 0 ? pairs[pairs.length - 1].idx + 1 : 1;
+
+    const { error } = await supabase
+      .from("before_after_pairs")
+      .insert([{ idx: newIdx, before_url: null, after_url: null }]);
+
+    if (error) {
+      console.error("Insert error:", error.message || error);
+      alert("Insert failed: " + (error.message || "Check RLS or table config"));
+    } else {
+      fetchPairs(); // Refresh list
+    }
+  };
+
+  const handleFileChange = async (e, idx, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
     setUploading(true);
-    setMessage('');
 
-    try {
-      const pairId = uuidv4();
+    const publicUrl = await handleUpload(file, type, idx);
+    if (!publicUrl) return;
 
-      // Generate unique file names for each upload
-      const beforeFilename = `before-after/${pairId}_before_${beforeImage.name}`;
-      const afterFilename = `before-after/${pairId}_after_${afterImage.name}`;
+    const update =
+      type === "before" ? { before_url: publicUrl } : { after_url: publicUrl };
 
-      // Upload Before image
-      let { data: beforeData, error: beforeError } = await supabase.storage
-        .from('projects')
-        .upload(beforeFilename, beforeImage, { cacheControl: '3600', upsert: false });
+    const { error } = await supabase
+      .from("before_after_pairs")
+      .update(update)
+      .eq("idx", idx);
 
-      if (beforeError) throw beforeError;
+    if (error) console.error("Update error:", error);
+    else fetchPairs();
 
-      // Upload After image
-      let { data: afterData, error: afterError } = await supabase.storage
-        .from('projects')
-        .upload(afterFilename, afterImage, { cacheControl: '3600', upsert: false });
+    setUploading(false);
+  };
 
-      if (afterError) throw afterError;
+  const handleDelete = async (row) => {
+    const pathsToDelete = [];
 
-      // Get public URLs
-      const beforeUrl = supabase.storage.from('projects').getPublicUrl(beforeFilename).publicURL;
-      const afterUrl = supabase.storage.from('projects').getPublicUrl(afterFilename).publicURL;
-
-      // Insert into table
-      const { error: insertError } = await supabase
-        .from('before_after_pairs')
-        .insert({
-          id: pairId,
-          before_image_url: beforeUrl,
-          after_image_url: afterUrl,
-          created_at: new Date()
-        });
-
-      if (insertError) throw insertError;
-
-      setMessage('Pair uploaded successfully!');
-      setBeforeImage(null);
-      setAfterImage(null);
-      // Reset file inputs visually by clearing the value
-      document.getElementById('beforeInput').value = '';
-      document.getElementById('afterInput').value = '';
-    } catch (error) {
-      setMessage('Error uploading pair: ' + error.message);
-    } finally {
-      setUploading(false);
+    if (row.before_url) {
+      const beforePath = row.before_url.split("/bapics/")[1];
+      if (beforePath) pathsToDelete.push(beforePath);
     }
+
+    if (row.after_url) {
+      const afterPath = row.after_url.split("/bapics/")[1];
+      if (afterPath) pathsToDelete.push(afterPath);
+    }
+
+    if (pathsToDelete.length > 0) {
+      const { error: deleteError } = await supabase.storage
+        .from("bapics")
+        .remove(pathsToDelete);
+
+      if (deleteError) console.error("Storage delete error:", deleteError);
+    }
+
+    const { error } = await supabase
+      .from("before_after_pairs")
+      .delete()
+      .eq("idx", row.idx);
+
+    if (error) console.error("Delete row error:", error);
+    else fetchPairs();
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
-      <h1 className="text-4xl font-extrabold mb-8">Before and After Pair Pics Upload</h1>
-
-      <div className="mb-4 w-full max-w-md">
-        <label className="block mb-1 font-semibold">Before Image</label>
-        <input
-          id="beforeInput"
-          type="file"
-          accept="image/*"
-          onChange={handleBeforeChange}
-          className="w-full border p-2 rounded"
-        />
-      </div>
-
-      <div className="mb-6 w-full max-w-md">
-        <label className="block mb-1 font-semibold">After Image</label>
-        <input
-          id="afterInput"
-          type="file"
-          accept="image/*"
-          onChange={handleAfterChange}
-          className="w-full border p-2 rounded"
-        />
-      </div>
-
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-4">🛠 Admin: Before & After Pairs</h1>
       <button
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+        onClick={handleNewRow}
         disabled={uploading}
-        onClick={uploadPair}
-        className={`px-6 py-3 rounded text-white font-semibold ${
-          uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-        }`}
       >
-        {uploading ? 'Uploading...' : 'Upload Pair'}
+        ➕ Add New Row
       </button>
 
-      {message && (
-        <p className={`mt-6 max-w-md text-center ${message.startsWith('Error') ? 'text-red-600' : 'text-green-600'}`}>
-          {message}
-        </p>
-      )}
+      <div className="overflow-x-auto mt-6">
+        <table className="min-w-full border border-gray-300 text-center">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="p-2 border">Idx</th>
+              <th className="p-2 border">Before</th>
+              <th className="p-2 border">After</th>
+              <th className="p-2 border">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pairs.map((row) => (
+              <tr key={row.idx} className="border-t hover:bg-gray-50">
+                <td className="p-2">{row.idx}</td>
+                <td className="p-2 space-y-2">
+                  {row.before_url && (
+                    <img
+                      src={row.before_url}
+                      alt="Before"
+                      className="w-24 mx-auto rounded"
+                    />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, row.idx, "before")}
+                    disabled={uploading}
+                    className="text-sm"
+                  />
+                </td>
+                <td className="p-2 space-y-2">
+                  {row.after_url && (
+                    <img
+                      src={row.after_url}
+                      alt="After"
+                      className="w-24 mx-auto rounded"
+                    />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, row.idx, "after")}
+                    disabled={uploading}
+                    className="text-sm"
+                  />
+                </td>
+                <td className="p-2">
+                  <button
+                    onClick={() => handleDelete(row)}
+                    disabled={uploading}
+                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                  >
+                    ❌ Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {pairs.length === 0 && (
+              <tr>
+                <td colSpan="4" className="p-4 text-gray-500">
+                  No pairs uploaded yet.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
-
-export default AdminPairUpload;
