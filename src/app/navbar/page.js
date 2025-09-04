@@ -18,7 +18,9 @@ export default function Navbar({ imageUrl, setImageUrl }) {
         {/* Logo */}
         <div className="flex items-center">
                     <Link href="/" className="text-white text-lg font-bold ml-3">
-          <img src={imageUrl} alt="Zafari CC Design Logo" className="h-12" />
+          {imageUrl && (
+            <img src={imageUrl} alt="Zafari CC Design Logo" className="h-12" />
+          )}
                     </Link>
 
           <Link href="/" className="text-white text-lg font-bold ml-3">
