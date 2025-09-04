@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from 'next/font/google';
+import { LogoProvider } from '@/contexts/LogoContext';
 import './globals.css';
 
 // Load the Geist and Geist_Mono fonts with the variable setup
@@ -26,7 +27,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <LogoProvider>
+          {children}
+        </LogoProvider>
       </body>
     </html>
   );

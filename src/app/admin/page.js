@@ -5,16 +5,13 @@ import styles from './admin.module.css';
 import Navbar from '../navbar/page';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-const panels = [
-  { name: 'Home Page', href: '/admin/home' },
-  { name: 'Logo', href: '/admin/logo' },
-  { name: 'Gallery', href: '/admin/gallery' },
-];
+import { useLogo } from '@/contexts/LogoContext';
 
 export default function AdminPanel() {
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const { imageUrl, setImageUrl } = useLogo();
+  
   const router = useRouter();
 
   useEffect(() => {
@@ -61,16 +58,20 @@ export default function AdminPanel() {
 
   return (
     <>
-      <Navbar />
+      <Navbar imageUrl={imageUrl} setImageUrl={setImageUrl} />
       <div className={styles.wrapper}>
         <div className={styles.overlay}></div>
         <h1 className={styles.heading}>Zafari Website Admin Panel</h1>
         <div className={styles.grid}>
-          {panels.map((panel) => (
-            <Link href={panel.href} key={panel.name} className={styles.card}>
-              {panel.name}
-            </Link>
-          ))}
+          <Link href="/admin/home" className={styles.card}>
+            Home Page
+          </Link>
+          <Link href="/admin/logo" className={styles.card}>
+            Logo
+          </Link>
+          <Link href="/admin/gallery" className={styles.card}>
+            Gallery
+          </Link>
         </div>
       </div>
     </>

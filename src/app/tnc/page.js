@@ -1,10 +1,12 @@
 import Footer from "../footer/page";
 import Navbar from "../navbar/page";
+import { useLogo } from '@/contexts/LogoContext';
 
 export default function TermsConditions() {
+  const { imageUrl, setImageUrl } = useLogo();
   return (
     <>
-      <Navbar />
+      <Navbar imageUrl={imageUrl} setImageUrl={setImageUrl}/>
       <div className="bg-[#f9f9f9] text-[#333] py-10 px-4 sm:px-8">
         <div className="container mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl font-bold mb-6">Terms & Conditions</h1>

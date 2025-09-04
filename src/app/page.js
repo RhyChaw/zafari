@@ -10,10 +10,12 @@ import interiorDesign from '../images/6.jpeg';
 import furnitureDesign from '../images/11.jpeg';
 import roomRedesign from '../images/13.jpeg';
 import styles from './flipcard.module.css';
+import { useLogo } from '@/contexts/LogoContext';
 
 export default function Home() {
   const [pageContent, setPageContent] = useState({});
   const [loading, setLoading] = useState(true);
+  const { imageUrl, setImageUrl } = useLogo();
 
   const services = [
     { title: 'Custom Carpentry', description: 'Tailored solutions to meet your unique needs.', img: customCarpentry },
@@ -49,7 +51,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 text-gray-900">
-      <Navbar />
+      <Navbar imageUrl={imageUrl} setImageUrl={setImageUrl} />
       <main className="flex-1">
         {/* Landing Section */}
         <div className="relative h-screen">

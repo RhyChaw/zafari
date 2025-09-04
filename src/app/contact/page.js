@@ -4,11 +4,13 @@ import Footer from '../footer/page';
 import { useState } from 'react';
 import Image from 'next/image';
 import contactImg from '../../images/bnw.jpg'; // Use a relevant image for the contact section
+import { useLogo } from '@/contexts/LogoContext';
 
 export default function Contact() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState('');
+  const { imageUrl, setImageUrl } = useLogo();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +35,7 @@ export default function Contact() {
 
   return (
     <>
-      <Navbar />
+      <Navbar imageUrl={imageUrl} setImageUrl={setImageUrl}/>
       <div className="min-h-screen bg-white text-gray-900">
         {/* Hero Section */}
         <section className="relative h-[400px] bg-gradient-to-r from-[#6a4e23] to-[#9e7a3f]">

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
-export default function Navbar() {
+export default function Navbar({ imageUrl, setImageUrl }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -18,7 +18,7 @@ export default function Navbar() {
         {/* Logo */}
         <div className="flex items-center">
                     <Link href="/" className="text-white text-lg font-bold ml-3">
-          <img src="/logo.jpeg" alt="Zafari CC Design Logo" className="h-12" />
+          <img src={imageUrl} alt="Zafari CC Design Logo" className="h-12" />
                     </Link>
 
           <Link href="/" className="text-white text-lg font-bold ml-3">

@@ -2,11 +2,13 @@
 import Image from 'next/image';
 import Navbar from '../navbar/page';
 import Footer from '../footer/page';
+import { useLogo } from '@/contexts/LogoContext';
 
 export default function About() {
+  const { imageUrl, setImageUrl } = useLogo();
   return (
     <>
-    <Navbar />
+    <Navbar imageUrl={imageUrl} setImageUrl={setImageUrl}/>
     <div className="min-h-screen bg-white text-gray-900">
       <section className="bg-gradient-to-r from-[#6a4e23] to-[#9e7a3f] py-8">
         <div className="container mx-auto flex flex-col items-center text-center text-white">

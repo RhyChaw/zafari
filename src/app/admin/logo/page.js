@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import supabase from '../../../utils/supabaseClient';
 import Navbar from '../../navbar/page';
+import { useLogo } from '@/contexts/LogoContext';
 import styles from './AdminLogoPage.module.css'; // Create this CSS module
 
 export default function AdminLogoPage() {
   const [file, setFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const { imageUrl, setImageUrl } = useLogo();
   const bucket = 'logo';
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function AdminLogoPage() {
 
   return (
     <>
-    <Navbar />
+    <Navbar imageUrl={imageUrl} setImageUrl={setImageUrl} />
     <div className={styles.page}>
       <div className={styles.card}>
         <h1 className={styles.title}>🧠 Admin Logo Control Panel</h1>
@@ -87,7 +87,7 @@ export default function AdminLogoPage() {
 
       <div className={styles.navbarPreview}>
         <h2>Navbar Preview</h2>
-        <Navbar logoUrl={imageUrl} />
+        <Navbar imageUrl={imageUrl} setImageUrl={setImageUrl} />
       </div>
 
       <button

@@ -5,10 +5,13 @@ import Navbar from '../navbar/page';
 import Footer from '../footer/page';
 import styles from './Projects.module.css';
 import supabase from '../../utils/supabaseClient';
+import { useLogo } from '@/contexts/LogoContext';
+
 
 export default function Projects() {
   const [imageUrls, setImageUrls] = useState([]);
   const [beforeAfterPairs, setBeforeAfterPairs] = useState([]);
+  const { imageUrl, setImageUrl } = useLogo();
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -45,7 +48,7 @@ export default function Projects() {
 
   return (
     <>
-      <Navbar />
+      <Navbar imageUrl={imageUrl} setImageUrl={setImageUrl}/>
 
       {/* Main Gallery */}
       <div className={styles.galleryContainer}>
