@@ -1,3 +1,5 @@
+"use client";
+
 import Footer from "../footer/page";
 import Navbar from "../navbar/page";
 import { useLogo } from '@/contexts/LogoContext';

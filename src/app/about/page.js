@@ -1,3 +1,5 @@
+"use client";
+
 // pages/about.js
 import Image from 'next/image';
 import Navbar from '../navbar/page';
