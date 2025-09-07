@@ -1,8 +1,8 @@
 import { Geist, Geist_Mono } from 'next/font/google';
 import { LogoProvider } from '@/contexts/LogoContext';
+import FaviconUpdater from './components/faviconUpdater';
 import './globals.css';
 
-// Load the Geist and Geist_Mono fonts with the variable setup
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -24,10 +24,9 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <LogoProvider>
+          <FaviconUpdater />
           {children}
         </LogoProvider>
       </body>
